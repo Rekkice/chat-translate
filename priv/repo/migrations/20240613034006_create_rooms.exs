@@ -3,11 +3,11 @@ defmodule Chat.Repo.Migrations.CreateRooms do
 
   def change do
     create table(:rooms) do
-      add :languages, references(:languages, on_delete: :nothing)
+      # add :languages, references(:languages, on_delete: :nothing)
 
       timestamps(type: :utc_datetime)
     end
 
-    create index(:rooms, [:languages])
+    # create index(:rooms, [:languages])
   end
 end

@@ -3,8 +3,8 @@ defmodule Chat.Rooms.Room do
   import Ecto.Changeset
 
   schema "rooms" do
-
-    field :languages, :id
+    has_many :languages, Chat.Lang.Language
+    has_many :messages, Chat.Messages.Message
 
     timestamps(type: :utc_datetime)
   end
