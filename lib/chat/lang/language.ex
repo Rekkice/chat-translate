@@ -1,10 +1,10 @@
 defmodule Chat.Lang.Language do
   use Ecto.Schema
   import Ecto.Changeset
+  @derive {Jason.Encoder, except: [:__meta__, :room]}
 
   schema "languages" do
     field :name, :string
-    field :room, :id
 
     belongs_to :room, Chat.Rooms.Room
 
@@ -14,7 +14,8 @@ defmodule Chat.Lang.Language do
   @doc false
   def changeset(language, attrs) do
     language
-    |> cast(attrs, [:name, :room_id])
-    |> validate_required([:name, :room_id])
+    |> cast(attrs, [:name])
+    |> validate_required([:name])
+    |> cast_assoc(:room)
   end
 end

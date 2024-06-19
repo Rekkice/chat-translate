@@ -1,6 +1,7 @@
 defmodule Chat.Rooms.Room do
   use Ecto.Schema
   import Ecto.Changeset
+  @derive {Jason.Encoder, except: [:__meta__]}
 
   schema "rooms" do
     has_many :languages, Chat.Lang.Language

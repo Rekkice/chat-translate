@@ -14,8 +14,8 @@ defmodule ChatWeb.RoomController do
     render(conn, :new, changeset: changeset)
   end
 
-  def create(conn, %{"room" => room_params}) do
-    case Rooms.create_room(room_params) do
+  def create(conn, _params) do
+    case Rooms.create_room do
       {:ok, room} ->
         conn
         |> put_flash(:info, "Room created successfully.")

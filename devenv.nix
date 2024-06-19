@@ -6,6 +6,7 @@
     pkgs.inotify-tools
     pkgs.nodejs_21
     pkgs.nodePackages_latest.npm
+    pkgs.nodePackages_latest.typescript-language-server
   ];
 
   services.postgres = {

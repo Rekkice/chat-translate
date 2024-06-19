@@ -4,7 +4,10 @@ defmodule Chat.Rooms do
   """
 
   import Ecto.Query, warn: false
+  alias Chat.Messages.Message
+  alias Chat.Lang.Language
   alias Chat.Repo
+  alias Phoenix.PubSub
 
   alias Chat.Rooms.Room
 
@@ -19,6 +22,7 @@ defmodule Chat.Rooms do
   """
   def list_rooms do
     Repo.all(Room)
+    |> Repo.preload([:languages, :messages])
   end
 
   @doc """
@@ -35,7 +39,7 @@ defmodule Chat.Rooms do
       ** (Ecto.NoResultsError)
 
   """
-  def get_room!(id), do: Repo.get!(Room, id)
+  def get_room!(id), do: Repo.get!(Room, id) |> Repo.preload([:languages, :messages])
 
   @doc """
   Creates a room.
@@ -49,28 +53,21 @@ defmodule Chat.Rooms do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_room(attrs \\ %{}) do
-    %Room{}
-    |> Room.changeset(attrs)
-    |> Repo.insert()
-  end
+  def create_room() do
+    Repo.transaction(fn ->
+      room_changeset = Room.changeset(%Room{}, %{})
+      {:ok, room} = Repo.insert(room_changeset)
 
-  @doc """
-  Updates a room.
+      %Language{name: "Español", room_id: room.id}
+      |> Language.changeset(%{})
+      |> Repo.insert!()
 
-  ## Examples
+      %Language{name: "Inglés", room_id: room.id}
+      |> Language.changeset(%{})
+      |> Repo.insert!()
 
-      iex> update_room(room, %{field: new_value})
-      {:ok, %Room{}}
-
-      iex> update_room(room, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_room(%Room{} = room, attrs) do
-    room
-    |> Room.changeset(attrs)
-    |> Repo.update()
+      {:ok, room}
+    end)
   end
 
   @doc """
@@ -89,16 +86,40 @@ defmodule Chat.Rooms do
     Repo.delete(room)
   end
 
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking room changes.
+  def send_message(attrs) do
+    IO.inspect("Sending message:")
+    IO.inspect(attrs)
 
-  ## Examples
+    %Message{}
+    |> Message.changeset(attrs)
+    |> Repo.insert()
+    |> handle_insert_result()
+    |> notify(attrs.room_id, :sent_message)
+  end
 
-      iex> change_room(room)
-      %Ecto.Changeset{data: %Room{}}
+  def notify({:ok, %Message{} = message}, room_id, event) do
+    PubSub.broadcast(Chat.PubSub, "room:#{room_id}", {event, message})
+  end
 
-  """
-  def change_room(%Room{} = room, attrs \\ %{}) do
-    Room.changeset(room, attrs)
+  defp handle_insert_result({:ok, message}) do
+    IO.inspect("Message inserted successfully:")
+    IO.inspect(message)
+    {:ok, message}
+  end
+
+  defp handle_insert_result({:error, changeset}) do
+    IO.inspect("Failed to insert message:")
+    IO.inspect(changeset)
+    {:error, changeset}
+  end
+
+  # def send_message(room_id, attrs) do
+  #   %Message{}
+  #   |> Message.changeset(Map.put(attrs, :room_id, room_id))
+  #   |> Repo.insert()
+  # end
+
+  def subscribe(id) do
+    PubSub.subscribe(Chat.PubSub, "room:#{id}")
   end
 end
