@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount, tick } from "svelte"
     import Icon from "./TranslateIcon.svelte"
+    import QRCode from 'easyqrcodejs'
 
     interface Message {
         sender: string
@@ -10,10 +11,12 @@
     export let initialMessages: any[]
     export let live
 
+    let node
+
     console.log("initial messages:")
     console.log(initialMessages)
 
-    export let username: string = "name"
+    export let username: string
 
     let messages: Message[] = []
     messages = initialMessages.map((message) => {
@@ -50,15 +53,31 @@
                 messages = [...messages, message]
             })
         }
+        const options = {
+          text: window.location.href,
+          width: 512,
+          height: 512,
+          quietZone: 10,
+          colorDark : "#4c4f69",
+          colorLight : "#eff1f5",
+        }
+        new QRCode(node, options)
     })
 
     $: scrollToBottom(messages)
 </script>
 
+<div class="mx-auto grid grid-cols-2 mt-14 sm:px-4 justify-center gap-4">
 {#if username}
-    <section class="bg-mantle sm:border-crust border-2 sm:rounded-xl w-full sm:p-4 pt-2 relative mt-14">
+    <div class="h-full justify-center items-center hidden sm:flex flex-col gap-8">
+        <h2 class="text-2xl bg-mantle px-8 py-8 rounded-xl text-text w-4/6 text-center">
+            Únete al grupo escaneando este código
+        </h2>
+        <div class="bg-mantle rounded-xl w-4/6 aspect-square relative" bind:this={node}></div>
+    </div>
+    <section class="max-w-2xl bg-mantle sm:border-crust border-2 sm:rounded-xl w-full sm:p-4 pt-2 relative">
         <div
-            class="overflow-y-auto max-h-[calc(100vh-9.5rem)] sm:max-h-[calc(100vh-13.5rem)]  text-seagull-800 flex flex-col gap-0 mb-2 px-2"
+            class="overflow-y-auto h-[calc(100vh-9.5rem)] sm:h-[calc(100vh-13.5rem)] text-seagull-800 flex flex-col gap-0 mb-2 px-2"
             id="chatbox"
         >
             {#each messages as message}
@@ -117,3 +136,17 @@
         </div>
     </div>
 {/if}
+</div>
+
+
+<style>
+  div :global(canvas) {
+    /* fit QR to wrapper */
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 0.75rem;
+  }
+</style>
