@@ -69,7 +69,7 @@
     $: scrollToBottom(messages)
 </script>
 
-<div class="mx-auto grid grid-cols-2 mt-14 sm:px-4 justify-center gap-4">
+<div class="mx-auto grid sm:grid-cols-2 mt-14 sm:px-4 justify-center gap-4">
 {#if username}
     <div class="h-full justify-center items-center hidden sm:flex flex-col gap-8">
         <h2 class="text-2xl bg-mantle px-8 py-8 rounded-xl text-text w-4/6 text-center">
