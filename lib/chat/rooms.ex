@@ -25,6 +25,10 @@ defmodule Chat.Rooms do
     |> Repo.preload([:languages, :messages])
   end
 
+  def list_rooms_nopl do
+    Repo.all(Room)
+  end
+
   @doc """
   Gets a single room.
 
@@ -121,5 +125,9 @@ defmodule Chat.Rooms do
 
   def subscribe(id) do
     PubSub.subscribe(Chat.PubSub, "room:#{id}")
+  end
+
+  def change_room(%Room{} = room, attrs \\ %{}) do
+    Room.changeset(room, attrs)
   end
 end

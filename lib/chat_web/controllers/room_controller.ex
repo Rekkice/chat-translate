@@ -5,7 +5,7 @@ defmodule ChatWeb.RoomController do
   alias Chat.Rooms.Room
 
   def index(conn, _params) do
-    rooms = Rooms.list_rooms()
+    rooms = Rooms.list_rooms_nopl()
     render(conn, :index, rooms: rooms)
   end
 

@@ -1,4 +1,4 @@
-<.header>
+<.header class="mt-32">
   Listing Rooms
   <:actions>
     <.link href={~p"/rooms/new"}>
@@ -8,6 +8,7 @@
 </.header>
 
 <.table id="rooms" rows={@rooms} row_click={&JS.navigate(~p"/rooms/#{&1}")}>
+  <:col :let={room} label="Name">Room <%= room.id %></:col>
   <:action :let={room}>
     <div class="sr-only">
       <.link navigate={~p"/rooms/#{room}"}>Show</.link>

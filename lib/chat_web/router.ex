@@ -17,11 +17,11 @@ defmodule ChatWeb.Router do
   scope "/", ChatWeb do
     pipe_through :browser
 
-    # resources "/languages", LanguageController
     resources "/rooms", RoomController
-    resources "/messages", MessageController
+    resources "/languages", LanguageController
+    # resources "/messages", MessageController
 
-    # get "/", PageController, :home
+    get "/", PageController, :home
 
     live "/room/:id", ChatLive, :show
   end
