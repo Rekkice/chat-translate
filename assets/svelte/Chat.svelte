@@ -12,6 +12,7 @@
     export let live
 
     let node
+    let qrString = "Cargando..."
 
     console.log("initial messages:")
     console.log(initialMessages)
@@ -43,6 +44,7 @@
 
     onMount(() => {
         scrollToBottom(null)
+        if (typeof window == "undefined") qrString = window.location.href
 
         if (live) {
             live.handleEvent("received_message", (data) => {
@@ -54,7 +56,7 @@
             })
         }
         const options = {
-          text: window.location.href,
+          text: qrString,
           width: 512,
           height: 512,
           quietZone: 10,
