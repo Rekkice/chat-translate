@@ -13,10 +13,8 @@
     export let live
 
     let node
+    let chatInput
     let createdQR = false
-
-    console.log("initial messages:")
-    console.log(initialMessages)
 
     export let username: string
 
@@ -33,7 +31,7 @@
     }
 
     function sendMessage(e) {
-        const input = e.srcElement[0]
+        const input = e.srcElement[0] || e.target
         live.pushEvent("send_message", { content: input.value, username: username })
         input.value = ""
     }
@@ -72,10 +70,17 @@
         new QRCode(node, options)
     }
 
+    function handleKeyDown(event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault()
+            sendMessage(event)
+        }
+    }
+
     $: scrollToBottom(messages)
 </script>
 
-<div class="mx-auto grid sm:grid-cols-2 mt-14 sm:px-4 justify-center gap-4">
+<div class="mx-auto sm:grid sm:grid-cols-2 mt-14 sm:px-4 justify-center gap-4">
 {#if username}
     <div class="h-full justify-center items-center hidden sm:flex flex-col gap-8">
         <h2 class="text-2xl bg-mantle px-8 py-8 rounded-xl text-text w-4/6 text-center">
@@ -84,7 +89,7 @@
         <div class="bg-mantle rounded-xl w-4/6 aspect-square relative" bind:this={node}>
         
         {#if !createdQR}
-            <button class="size-full" on:click={() => createQR()}>generar</button>
+            <button class="size-full text-3xl" on:click={() => createQR()}>Mostrar</button>
         {/if}
         </div>
     </div>
@@ -118,13 +123,14 @@
                 </div>
             {/each}
         </div>
-        <form on:submit|preventDefault={sendMessage} class="flex gap-4 px-2 pb-2 sm:pb-0 sm:px-0">
+        <form on:submit|preventDefault={sendMessage} bind:this={chatInput} class="flex gap-4 px-2 pb-2 sm:pb-0 sm:px-0">
             <textarea
                 class="w-full resize-none h-fit rounded-lg border-crust"
                 type="text"
                 minlength="1"
                 maxlength="300"
                 required
+                on:keydown={handleKeyDown}
             />
             <button class="w-16 p-2 fill-peach flex justify-center items-center">
                 <svg class="" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z"/></svg>
