@@ -4,12 +4,7 @@ defmodule Chat.Translation do
   """
 
   @api_url "https://api.groq.com/openai/v1/chat/completions"
-  @api_key System.get_env("GROQ_API_KEY")
   @model "llama3-70b-8192"
-  @headers [
-    {"Content-Type", "application/json"},
-    {"Authorization", "Bearer #{@api_key}"}
-  ]
 
   @spec translate(String.t()) :: {:ok, map()} | {:error, any()}
   def translate(content) do
@@ -38,7 +33,10 @@ defmodule Chat.Translation do
       }
       |> Jason.encode!()
 
-    case HTTPoison.post(@api_url, body, @headers) do
+    case HTTPoison.post(@api_url, body, [
+           {"Content-Type", "application/json"},
+           {"Authorization", "Bearer #{System.get_env("GROQ_API_KEY")}"}
+         ]) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         case Jason.decode(body) do
           {:ok, %{"choices" => choices}} ->
