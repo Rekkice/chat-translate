@@ -5,14 +5,15 @@
 
     interface Message {
         sender: string
-        content: string
+        spanish_content: string
+        english_content: string
     }
 
     export let initialMessages: any[]
     export let live
 
     let node
-    let qrString = "Cargando..."
+    let createdQR = false
 
     console.log("initial messages:")
     console.log(initialMessages)
@@ -21,7 +22,7 @@
 
     let messages: Message[] = []
     messages = initialMessages.map((message) => {
-        return { sender: message.username, content: message.content }
+        return { sender: message.username, spanish_content: message.spanish_content, english_content: message.english_content }
     })
 
     async function scrollToBottom(_value: any) {
@@ -44,27 +45,32 @@
 
     onMount(() => {
         scrollToBottom(null)
-        if (typeof window == "undefined") qrString = window.location.href
 
         if (live) {
             live.handleEvent("received_message", (data) => {
                 const message: Message = {
-                    content: data.message.content,
+                    spanish_content: data.message.spanish_content,
+                    english_content: data.message.english_content,
                     sender: data.message.username,
                 }
                 messages = [...messages, message]
             })
         }
+    })
+
+    function createQR() {
+        if (typeof window == "undefined" || !node) return
         const options = {
-          text: qrString,
+          text: window.location.href,
           width: 512,
           height: 512,
           quietZone: 10,
           colorDark : "#4c4f69",
           colorLight : "#eff1f5",
         }
+        createdQR = true
         new QRCode(node, options)
-    })
+    }
 
     $: scrollToBottom(messages)
 </script>
@@ -75,7 +81,12 @@
         <h2 class="text-2xl bg-mantle px-8 py-8 rounded-xl text-text w-4/6 text-center">
             Únete al grupo escaneando este código
         </h2>
-        <div class="bg-mantle rounded-xl w-4/6 aspect-square relative" bind:this={node}></div>
+        <div class="bg-mantle rounded-xl w-4/6 aspect-square relative" bind:this={node}>
+        
+        {#if !createdQR}
+            <button class="size-full" on:click={() => createQR()}>generar</button>
+        {/if}
+        </div>
     </div>
     <section class="max-w-2xl bg-mantle sm:border-crust border-2 sm:rounded-xl w-full sm:p-4 pt-2 relative">
         <div
@@ -89,7 +100,7 @@
                     >
                     <div class="w-full h-full bg-base rounded-xl px-2 z-10">
                         <div class="break-all text-text relative py-4 pt-2">
-                            {message.content}
+                            {message.spanish_content}
                             <div class="absolute bg-white -top-3 right-0 h-6 p-1 rounded-lg flex flex-row items-center justify-center gap-1 border border-crust">
                                 <svg class="w-full h-full fill-teal" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="m476-80 182-480h84L924-80h-84l-43-122H603L560-80h-84ZM160-200l-56-56 202-202q-35-35-63.5-80T190-640h84q20 39 40 68t48 58q33-33 68.5-92.5T484-720H40v-80h280v-80h80v80h280v80H564q-21 72-63 148t-83 116l96 98-30 82-122-125-202 201Zm468-72h144l-72-204-72 204Z"/></svg>
                                 <div class="text-subtext0 text-xs text-nowrap">Español</div>
@@ -97,7 +108,7 @@
                         </div>
                         <hr class="border-teal">
                         <div class="break-all text-text relative py-4 pb-2">
-                            {message.content}
+                            {message.english_content}
                             <div class="absolute bg-white -top-1 right-0 h-6 p-1 rounded-lg flex flex-row items-center justify-center gap-1 border border-crust">
                                 <svg class="w-full h-full fill-teal" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="m476-80 182-480h84L924-80h-84l-43-122H603L560-80h-84ZM160-200l-56-56 202-202q-35-35-63.5-80T190-640h84q20 39 40 68t48 58q33-33 68.5-92.5T484-720H40v-80h280v-80h80v80h280v80H564q-21 72-63 148t-83 116l96 98-30 82-122-125-202 201Zm468-72h144l-72-204-72 204Z"/></svg>
                                 <div class="text-subtext0 text-xs text-nowrap">Inglés</div>
