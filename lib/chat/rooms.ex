@@ -90,15 +90,26 @@ defmodule Chat.Rooms do
     Repo.delete(room)
   end
 
-  def send_message(attrs) do
+  def send_message(attrs, content) do
     IO.inspect("Sending message:")
-    IO.inspect(attrs)
+    IO.inspect(content)
 
-    %Message{}
-    |> Message.changeset(attrs)
-    |> Repo.insert()
-    |> handle_insert_result()
-    |> notify(attrs.room_id, :sent_message)
+    case Chat.Translation.translate(content) do
+      {:ok, translation = %{"english" => english, "spanish" => spanish}} ->
+        IO.inspect("Translation result:")
+        IO.inspect(translation)
+
+        new_attrs = Map.merge(%{english_content: english, spanish_content: spanish}, attrs)
+
+        %Message{}
+        |> Message.changeset(new_attrs)
+        |> Repo.insert()
+        |> handle_insert_result()
+        |> notify(attrs.room_id, :sent_message)
+
+      {:error, reason} ->
+        IO.inspect(reason, label: "Translation error:")
+    end
   end
 
   def notify({:ok, %Message{} = message}, room_id, event) do

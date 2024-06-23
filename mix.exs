@@ -58,7 +58,8 @@ defmodule Chat.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
-      {:live_svelte, "~> 0.13.2"}
+      {:live_svelte, "~> 0.13.2"},
+      {:httpoison, "~> 1.8"}
     ]
   end
 

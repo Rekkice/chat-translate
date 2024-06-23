@@ -42,7 +42,7 @@ defmodule ChatWeb.ChatLive do
     IO.inspect("room id:")
     IO.inspect(room.id)
 
-    Rooms.send_message(%{room_id: room.id, username: username, content: content})
+    Rooms.send_message(%{room_id: room.id, username: username}, content)
 
     {:noreply, socket}
   end
