@@ -1,5 +1,7 @@
 # Chat-translate
-Real-time chat web app that enables seamless conversations between people who speak different languages. Chat-Translate automatically translates messages as they are sent, allowing for fluid multilingual communication. Live demo hosted at https://chat-translate.rekkice.dev
+Real-time chat web app that enables seamless conversations between people who speak different languages. Chat-Translate automatically translates messages as they are sent, allowing for fluid multilingual communication. 
+
+Live demo hosted at https://chat-translate.rekkice.dev
 
 ## Key Features
 - Real-time translation of chat messages through an external API
