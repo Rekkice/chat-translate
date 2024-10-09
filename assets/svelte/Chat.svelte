@@ -85,11 +85,14 @@
     <div class="h-full justify-center items-center hidden sm:flex flex-col gap-8">
         <h2 class="text-2xl bg-mantle px-8 py-8 rounded-xl text-text w-4/6 text-center">
             Únete al grupo escaneando este código
+            <hr class="border-teal my-2">
+            Join the groupchat by scanning this code
         </h2>
+
         <div class="bg-mantle rounded-xl w-4/6 aspect-square relative" bind:this={node}>
         
         {#if !createdQR}
-            <button class="size-full text-3xl" on:click={() => createQR()}>Mostrar</button>
+            <button class="size-full text-3xl" on:click={() => createQR()}>Mostrar | Show</button>
         {/if}
         </div>
     </div>
@@ -116,7 +119,7 @@
                             {message.english_content}
                             <div class="absolute bg-white -top-1 right-0 h-6 p-1 rounded-lg flex flex-row items-center justify-center gap-1 border border-crust">
                                 <svg class="w-full h-full fill-teal" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="m476-80 182-480h84L924-80h-84l-43-122H603L560-80h-84ZM160-200l-56-56 202-202q-35-35-63.5-80T190-640h84q20 39 40 68t48 58q33-33 68.5-92.5T484-720H40v-80h280v-80h80v80h280v80H564q-21 72-63 148t-83 116l96 98-30 82-122-125-202 201Zm468-72h144l-72-204-72 204Z"/></svg>
-                                <div class="text-subtext0 text-xs text-nowrap">Inglés</div>
+                                <div class="text-subtext0 text-xs text-nowrap">English</div>
                             </div>
                         </div>
                     </div>
@@ -141,7 +144,7 @@
     <div class="absolute left-0 top-0 w-full h-full flex justify-center items-center">
         <div class="w-fit h-fit bg-base shadow-lg border border-peach py-8 px-12 rounded-2xl flex flex-col gap-8 items-center justify-center">
             <h1 class="text-2xl text-text">
-                Introduzca un nombre:
+                Introduzca su nombre | Enter your name
             </h1>
             <form on:submit|preventDefault={enterUsername}>
                 <input

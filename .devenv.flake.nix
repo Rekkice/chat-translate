@@ -1,14 +1,15 @@
 {
   inputs =
     let
-      version = "1.0.4";
+      version = "1.2.0";
 system = "x86_64-linux";
-devenv_root = "/home/Lekkice/code/chat";
+devenv_root = "/home/Lekkice/code/elixir/chat-translate";
 devenv_dotfile = ./.devenv;
 devenv_dotfile_string = ".devenv";
 container_name = null;
 devenv_tmpdir = "/run/user/1000";
-devenv_runtime = "/run/user/1000/devenv-f55a74e";
+devenv_runtime = "/run/user/1000/devenv-fdc4c33";
+devenv_istesting = false;
 
         in {
         pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
@@ -21,14 +22,15 @@ devenv_runtime = "/run/user/1000/devenv-f55a74e";
 
       outputs = { nixpkgs, ... }@inputs:
         let
-          version = "1.0.4";
+          version = "1.2.0";
 system = "x86_64-linux";
-devenv_root = "/home/Lekkice/code/chat";
+devenv_root = "/home/Lekkice/code/elixir/chat-translate";
 devenv_dotfile = ./.devenv;
 devenv_dotfile_string = ".devenv";
 container_name = null;
 devenv_tmpdir = "/run/user/1000";
-devenv_runtime = "/run/user/1000/devenv-f55a74e";
+devenv_runtime = "/run/user/1000/devenv-fdc4c33";
+devenv_istesting = false;
 
             devenv =
             if builtins.pathExists (devenv_dotfile + "/devenv.json")
@@ -87,6 +89,9 @@ devenv_runtime = "/run/user/1000/devenv-f55a74e";
                 devenv.tmpdir = devenv_tmpdir;
                 devenv.runtime = devenv_runtime;
               })
+              (pkgs.lib.optionalAttrs (inputs.devenv.hasIsTesting or false) {
+                devenv.isTesting = devenv_istesting;
+              })
               (pkgs.lib.optionalAttrs (container_name != null) {
                 container.isBuilding = pkgs.lib.mkForce true;
                 containers.${container_name}.isBuilding = true;
@@ -113,14 +118,31 @@ devenv_runtime = "/run/user/1000/devenv-f55a74e";
                   v
               );
           };
+
+          build = options: config:
+            lib.concatMapAttrs
+              (name: option:
+                if builtins.hasAttr "type" option then
+                  if option.type.name == "output" || option.type.name == "outputOf" then {
+                    ${name} = config.${name};
+                  } else { }
+                else
+                  let v = build option config.${name};
+                  in if v != { } then {
+                    ${name} = v;
+                  } else { }
+              )
+              options;
         in
         {
           packages."${system}" = {
             optionsJSON = options.optionsJSON;
+            # deprecated
             inherit (config) info procfileScript procfileEnv procfile;
             ci = config.ciDerivation;
           };
           devenv = config;
+          build = build project.options project.config;
           devShell."${system}" = config.shell;
         };
       }
