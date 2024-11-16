@@ -21,8 +21,10 @@ defmodule ChatWeb.RoomController do
         |> put_flash(:info, "Room created successfully.")
         |> redirect(to: ~p"/room/#{room.id}")
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :new, changeset: changeset)
+      {:error, %Ecto.Changeset{} = _changeset} ->
+        conn
+        |> put_flash(:error, "There was a problem creating the room. Please try again later. If the problem persists, please contact me.")
+        |> redirect(to: ~p"/")
     end
   end
 
