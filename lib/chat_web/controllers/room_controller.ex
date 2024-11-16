@@ -16,10 +16,10 @@ defmodule ChatWeb.RoomController do
 
   def create(conn, _params) do
     case Rooms.create_room do
-      {:ok, room} ->
+      {:ok, {:ok, room}} ->
         conn
         |> put_flash(:info, "Room created successfully.")
-        |> redirect(to: ~p"/rooms/#{room}")
+        |> redirect(to: ~p"/room/#{room.id}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, :new, changeset: changeset)

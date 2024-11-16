@@ -2,9 +2,15 @@
 <div class="h-full min-h-screen w-full flex justify-center items-center">
   <section class="max-w-[512px] w-full bg-mantle sm:border-crust sm:border-2 sm:h-80 flex flex-col justify-between py-12 px-8 rounded-xl">
     <h1 class="text-4xl text-center text-sapphire">Welcome to chat-translate!</h1>
-    <p class="text-center">This chat app is designed to bridge the language gap by using the power of AI to provide context-aware translations for every message in real-time.</p>
+    <p class="text-center">
+      This chat app is designed to bridge the language gap by using the power of AI to provide context-aware translations for every message in real-time.
+    </p>
     <div class="flex justify-between">
-      <button class="rounded-xl bg-sky text-white px-6 py-2">Create a new room</button>
+
+      <.form :let={f} for={@changeset} action={~p"/rooms"}>
+        <button class="rounded-xl bg-sky text-white px-6 py-2" type="submit">Create Room</button>
+      </.form>
+
       <a href="/room/1" class="rounded-xl bg-sky text-white px-6 py-2">Join the demo room</a>
     </div>
   </section>
