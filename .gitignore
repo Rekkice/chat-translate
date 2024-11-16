@@ -49,3 +49,4 @@ npm-debug.log
 /priv/svelte/
 .devenv
 .elixir_ls
+devenv.local.nix
