@@ -9,6 +9,7 @@
     pkgs.nodePackages_latest.typescript-language-server
     pkgs.flyctl
     pkgs.docker_25
+    pkgs.elixir-ls
   ];
 
   services.postgres = {

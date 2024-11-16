@@ -1,7 +1,7 @@
 {
   inputs =
     let
-      version = "1.2.0";
+      version = "1.3.1";
 system = "x86_64-linux";
 devenv_root = "/home/Lekkice/code/elixir/chat-translate";
 devenv_dotfile = ./.devenv;
@@ -22,7 +22,7 @@ devenv_istesting = false;
 
       outputs = { nixpkgs, ... }@inputs:
         let
-          version = "1.2.0";
+          version = "1.3.1";
 system = "x86_64-linux";
 devenv_root = "/home/Lekkice/code/elixir/chat-translate";
 devenv_dotfile = ./.devenv;
@@ -106,6 +106,7 @@ devenv_istesting = false;
 
           options = pkgs.nixosOptionsDoc {
             options = builtins.removeAttrs project.options [ "_module" ];
+            warningsAreErrors = false;
             # Unpack Nix types, e.g. literalExpression, mDoc.
             transformOptions =
               let isDocType = v: builtins.elem v [ "literalDocBook" "literalExpression" "literalMD" "mdDoc" ];
