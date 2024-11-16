@@ -21,8 +21,7 @@ defmodule ChatWeb.Router do
     resources "/languages", LanguageController
     # resources "/messages", MessageController
 
-    # get "/", PageController, :home
-    get "/", PageController, :redirect_home
+    get "/", PageController, :home
 
     live "/room/:id", ChatLive, :show
   end
