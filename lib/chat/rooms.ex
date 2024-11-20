@@ -94,22 +94,35 @@ defmodule Chat.Rooms do
     IO.inspect("Sending message:")
     IO.inspect(content)
 
-    case Chat.Translation.translate(content) do
-      {:ok, translation = %{"english" => english, "spanish" => spanish}} ->
-        IO.inspect("Translation result:")
-        IO.inspect(translation)
+    Chat.RateLimiters.LeakyBucket.make_request(
+      {Chat.Translation, :translate, [content]},
+      {__MODULE__, :handle_translation_result, [attrs]}
+    )
+  end
 
-        new_attrs = Map.merge(%{english_content: english, spanish_content: spanish}, attrs)
+  def handle_translation_result(
+        {:ok, %{"english" => english, "spanish" => spanish}},
+        attrs
+      ) do
+    IO.inspect("Translation result:")
+    IO.inspect(%{"english" => english, "spanish" => spanish})
 
-        %Message{}
-        |> Message.changeset(new_attrs)
-        |> Repo.insert()
-        |> handle_insert_result()
-        |> notify(attrs.room_id, :sent_message)
+    new_attrs = Map.merge(%{english_content: english, spanish_content: spanish}, attrs)
 
-      {:error, reason} ->
-        IO.inspect(reason, label: "Translation error:")
-    end
+    %Message{}
+    |> Message.changeset(new_attrs)
+    |> Repo.insert()
+    |> handle_insert_result()
+    |> notify(attrs.room_id, :sent_message)
+  end
+
+  def handle_translation_result({:error, :bucket_full}) do
+    # TODO notify user
+    IO.inspect("Bucket is full", label: "Translation error:")
+  end
+
+  def handle_translation_result({:error, reason}) do
+    IO.inspect(reason, label: "Translation error:")
   end
 
   def notify({:ok, %Message{} = message}, room_id, event) do
@@ -127,12 +140,6 @@ defmodule Chat.Rooms do
     IO.inspect(changeset)
     {:error, changeset}
   end
-
-  # def send_message(room_id, attrs) do
-  #   %Message{}
-  #   |> Message.changeset(Map.put(attrs, :room_id, room_id))
-  #   |> Repo.insert()
-  # end
 
   def subscribe(id) do
     PubSub.subscribe(Chat.PubSub, "room:#{id}")

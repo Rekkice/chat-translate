@@ -1,4 +1,5 @@
 defmodule Chat.Application do
+  alias Chat.RateLimiter
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -18,7 +19,15 @@ defmodule Chat.Application do
       # Start a worker by calling: Chat.Worker.start_link(arg)
       # {Chat.Worker, arg},
       # Start to serve requests, typically the last entry
-      ChatWeb.Endpoint
+      ChatWeb.Endpoint,
+      {Task.Supervisor, name: RateLimiter.TaskSupervisor},
+      {RateLimiter.get_rate_limiter(),
+       %{
+         timeframe_max_requests: RateLimiter.get_requests_per_timeframe(),
+         timeframe_units: RateLimiter.get_timeframe_unit(),
+         timeframe: RateLimiter.get_timeframe(),
+         bucket_size: RateLimiter.get_bucket_size()
+       }}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

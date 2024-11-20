@@ -31,16 +31,6 @@ config :chat, ChatWeb.Endpoint,
 # at the `config/runtime.exs`.
 config :chat, Chat.Mailer, adapter: Swoosh.Adapters.Local
 
-# Configure esbuild (the version is required)
-# config :esbuild,
-#   version: "0.17.11",
-#   chat: [
-#     args:
-#       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
-#     cd: Path.expand("../assets", __DIR__),
-#     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
-#   ]
-
 # Configure tailwind (the version is required)
 config :tailwind,
   version: "3.4.0",
@@ -61,6 +51,18 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Configures rate limiter for LLM API
+# 30 requests per minute
+# 1440 requests per day
+# 40000 tokens per minute
+config :chat, RateLimiter,
+  rate_limiter: Chat.RateLimiters.LeakyBucket,
+  timeframe_max_requests: 30,
+  timeframe_units: :seconds,
+  timeframe: 60,
+  bucket_size: 5
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
+
