@@ -1,7 +1,6 @@
 defmodule ChatWeb.ChatLive do
   use ChatWeb, :live_view
   alias Chat.Rooms
-  alias Phoenix.PubSub
 
   def render(assigns) do
     ~H"""
