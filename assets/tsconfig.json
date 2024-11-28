@@ -5,6 +5,8 @@
         "paths": {
             "$lib": ["svelte"],
             "$lib/*": ["svelte/*"]
-        }
+        },
+        "verbatimModuleSyntax": true,
+        "allowSyntheticDefaultImports": true
     }
 }
