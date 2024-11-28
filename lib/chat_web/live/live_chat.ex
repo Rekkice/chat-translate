@@ -22,7 +22,7 @@ defmodule ChatWeb.ChatLive do
   def mount(%{"id" => id}, _session, socket) do
     Rooms.subscribe(id)
 
-    room = Rooms.get_room!(id)
+    room = Rooms.get_room_by_url_id!(id)
     # room_key = "room:#{room.id}"
 
     {:ok,

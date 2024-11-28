@@ -5,7 +5,7 @@ defmodule Chat.Rooms do
 
   import Ecto.Query, warn: false
   alias Chat.Messages.Message
-  alias Chat.Lang.Language
+  # alias Chat.Lang.Language
   alias Chat.Repo
   alias Phoenix.PubSub
 
@@ -45,7 +45,9 @@ defmodule Chat.Rooms do
 
   """
   def get_room!(id), do: Repo.get!(Room, id) |> Repo.preload([:messages])
-  # def get_room!(id), do: Repo.get!(Room, id) |> Repo.preload([:languages, :messages])
+
+  def get_room_by_url_id!(id),
+    do: Repo.get_by!(Room, url_id: id) |> Repo.preload([:messages])
 
   @doc """
   Creates a room.
@@ -60,8 +62,9 @@ defmodule Chat.Rooms do
 
   """
   def create_room({lang1, lang2}) do
-    room_changeset = Room.changeset(%Room{}, %{lang1: lang1, lang2: lang2})
-    Repo.insert(room_changeset)
+    %Room{}
+    |> Room.changeset(%{lang1: lang1, lang2: lang2, url_id: FriendlyID.generate(2)})
+    |> Repo.insert()
 
     # %Language{name: "Español", room_id: room.id}
     # |> Language.changeset(%{})

@@ -19,7 +19,7 @@ defmodule ChatWeb.RoomController do
       {:ok, room} ->
         conn
         |> put_flash(:info, "Room created successfully.")
-        |> redirect(to: ~p"/room/#{room.id}")
+        |> redirect(to: ~p"/room/#{room.url_id}")
 
       {:error, %Ecto.Changeset{} = _changeset} ->
         conn
@@ -32,7 +32,7 @@ defmodule ChatWeb.RoomController do
   end
 
   def show(conn, %{"id" => id}) do
-    room = Rooms.get_room!(id)
+    room = Rooms.get_room_by_url_id!(id)
     render(conn, :show, room: room)
   end
 
