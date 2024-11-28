@@ -69,9 +69,6 @@ defmodule Chat.RateLimiters.LeakyBucket do
 
   @impl true
   def handle_cast({:enqueue_request, request_handler, response_handler}, state) do
-    IO.inspect("current queue size is " <> Integer.to_string(state.request_queue_size))
-    IO.inspect("current bucket size is " <> Integer.to_string(state.bucket_size))
-    
     updated_queue = :queue.in({request_handler, response_handler}, state.request_queue)
     new_queue_size = state.request_queue_size + 1
 
