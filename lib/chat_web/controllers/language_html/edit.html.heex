@@ -1,8 +1,0 @@
-<.header>
-  Edit Language <%= @language.id %>
-  <:subtitle>Use this form to manage language records in your database.</:subtitle>
-</.header>
-
-<.language_form changeset={@changeset} action={~p"/languages/#{@language}"} />
-
-<.back navigate={~p"/languages"}>Back to languages</.back>
