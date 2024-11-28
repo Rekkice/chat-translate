@@ -9,3 +9,4 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+Chat.Repo.insert!(%Chat.Rooms.Room{url_id: "demo", lang1: "English", lang2: "Spanish"})
