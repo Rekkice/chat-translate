@@ -8,8 +8,10 @@ defmodule ChatWeb.ChatLive do
       name="Chat"
       props={
         %{
-          languages: @languages,
-          initialMessages: @init_messages
+          # languages: @languages,
+          initialMessages: @init_messages,
+          lang1: @lang1,
+          lang2: @lang2
         }
       }
       socket={@socket}
@@ -27,7 +29,8 @@ defmodule ChatWeb.ChatLive do
      assign(socket,
        room: room,
        init_messages: room.messages,
-       languages: room.languages
+       lang1: room.lang1,
+       lang2: room.lang2
      )}
   end
 
@@ -38,10 +41,7 @@ defmodule ChatWeb.ChatLive do
       assigns
       |> Map.get(:room)
 
-    IO.inspect("room id:")
-    IO.inspect(room.id)
-
-    Rooms.send_message(%{room_id: room.id, username: username}, content)
+    Rooms.send_message(%{room_id: room.id, username: username, lang1: room.lang1, lang2: room.lang2}, content)
 
     {:noreply, socket}
   end

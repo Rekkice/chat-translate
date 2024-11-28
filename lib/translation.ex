@@ -6,15 +6,17 @@ defmodule Chat.Translation do
   @api_url "https://api.groq.com/openai/v1/chat/completions"
   @model "llama3-70b-8192"
 
-  @spec translate(String.t()) :: {:ok, map()} | {:error, any()}
-  def translate(content) do
+  @spec translate(String.t(), tuple()) :: {:ok, map()} | {:error, any()}
+  def translate(content, {lang1, lang2}) do
+    prompt =
+      ~s(JSON Translate the following message into these 2 languages: lang1=#{lang1} lang2=#{lang2}. Then, return a JSON with the "lang1" and "lang2" keys and their respective contents. If it could be seen as offensive, return [filtered] as a value for both keys. Keep the tone and writing style of the original message.)
+
     body =
       %{
         messages: [
           %{
             role: "system",
-            content:
-              "JSON Translate the following into english if it is in spanish, and into spanish if it is in english. Then, return a JSON with the \"english\" and \"spanish\" keys. If it could be seen as offensive, return (filter) for both keys."
+            content: prompt
           },
           %{
             role: "user",

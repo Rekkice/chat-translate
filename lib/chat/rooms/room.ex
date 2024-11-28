@@ -4,8 +4,11 @@ defmodule Chat.Rooms.Room do
   @derive {Jason.Encoder, except: [:__meta__]}
 
   schema "rooms" do
-    has_many :languages, Chat.Lang.Language
+    # has_many :languages, Chat.Lang.Language
     has_many :messages, Chat.Messages.Message
+
+    field :lang1, :string
+    field :lang2, :string
 
     timestamps(type: :utc_datetime)
   end

@@ -1,16 +1,19 @@
 <script lang="ts">
+  // TODO add actual i18n, where each UI component shows lang1 | lang2 instead of hardcoded spanish | english
   import { onMount, tick } from "svelte";
   import Icon from "./TranslateIcon.svelte";
   import QRCode from "easyqrcodejs";
 
   interface Message {
     sender: string;
-    spanish_content: string;
-    english_content: string;
+    content_lang1: string;
+    content_lang2: string;
     timestamp: Date;
   }
 
   export let initialMessages: any[];
+  export let lang1: string;
+  export let lang2: string;
   export let live;
 
   let node;
@@ -23,12 +26,14 @@
   messages = initialMessages.map((message) => {
     return {
       sender: message.username,
-      spanish_content: message.spanish_content,
-      english_content: message.english_content,
+      content_lang1: message.content_lang1,
+      content_lang2: message.content_lang2,
       timestamp: new Date(message.inserted_at),
     };
   });
 
+  console.log(initialMessages)
+  
   async function scrollToBottom(_value: any) {
     if (typeof window == "undefined") return;
     let chatbox = document.getElementById("chatbox");
@@ -56,8 +61,8 @@
     if (live) {
       live.handleEvent("received_message", (data) => {
         const message: Message = {
-          spanish_content: data.message.spanish_content,
-          english_content: data.message.english_content,
+          content_lang1: data.message.content_lang1,
+          content_lang2: data.message.content_lang2,
           sender: data.message.username,
           timestamp: new Date(data.message.inserted_at),
         };
@@ -145,7 +150,7 @@
             </div>
             <div class="w-full h-full bg-base rounded-xl px-2 z-10">
               <div class="break-all text-text relative py-4 pt-2">
-                {message.spanish_content}
+                {message.content_lang1}
                 <div
                   class="absolute bg-white -top-3 right-0 h-6 p-1 rounded-lg flex flex-row items-center justify-center gap-1 border border-crust"
                 >
@@ -157,12 +162,12 @@
                       d="m476-80 182-480h84L924-80h-84l-43-122H603L560-80h-84ZM160-200l-56-56 202-202q-35-35-63.5-80T190-640h84q20 39 40 68t48 58q33-33 68.5-92.5T484-720H40v-80h280v-80h80v80h280v80H564q-21 72-63 148t-83 116l96 98-30 82-122-125-202 201Zm468-72h144l-72-204-72 204Z"
                     /></svg
                   >
-                  <div class="text-subtext0 text-xs text-nowrap">Español</div>
+                  <div class="text-subtext0 text-xs text-nowrap">{lang1}</div>
                 </div>
               </div>
               <hr class="border-teal" />
               <div class="break-all text-text relative py-4 pb-2">
-                {message.english_content}
+                {message.content_lang2}
                 <div
                   class="absolute bg-white -top-1 right-0 h-6 p-1 rounded-lg flex flex-row items-center justify-center gap-1 border border-crust"
                 >
@@ -174,7 +179,7 @@
                       d="m476-80 182-480h84L924-80h-84l-43-122H603L560-80h-84ZM160-200l-56-56 202-202q-35-35-63.5-80T190-640h84q20 39 40 68t48 58q33-33 68.5-92.5T484-720H40v-80h280v-80h80v80h280v80H564q-21 72-63 148t-83 116l96 98-30 82-122-125-202 201Zm468-72h144l-72-204-72 204Z"
                     /></svg
                   >
-                  <div class="text-subtext0 text-xs text-nowrap">English</div>
+                  <div class="text-subtext0 text-xs text-nowrap">{lang2}</div>
                 </div>
               </div>
             </div>
@@ -213,7 +218,7 @@
         class="w-fit h-fit bg-base shadow-lg border border-peach py-8 px-12 rounded-2xl flex flex-col gap-8 items-center justify-center"
       >
         <h1 class="text-2xl text-text">
-          Introduzca su nombre | Enter your name
+          Introduce tu nombre | Enter your name
         </h1>
         <form on:submit|preventDefault={enterUsername}>
           <input

@@ -1,3 +1,5 @@
+# TODO unused, should refactor to use instead of lang1/lang2 fields later
+
 defmodule Chat.Lang.Language do
   use Ecto.Schema
   import Ecto.Changeset

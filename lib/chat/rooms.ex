@@ -22,7 +22,8 @@ defmodule Chat.Rooms do
   """
   def list_rooms do
     Repo.all(Room)
-    |> Repo.preload([:languages, :messages])
+    # |> Repo.preload([:languages, :messages])
+    |> Repo.preload([:messages])
   end
 
   def list_rooms_nopl do
@@ -43,7 +44,8 @@ defmodule Chat.Rooms do
       ** (Ecto.NoResultsError)
 
   """
-  def get_room!(id), do: Repo.get!(Room, id) |> Repo.preload([:languages, :messages])
+  def get_room!(id), do: Repo.get!(Room, id) |> Repo.preload([:messages])
+  # def get_room!(id), do: Repo.get!(Room, id) |> Repo.preload([:languages, :messages])
 
   @doc """
   Creates a room.
@@ -90,24 +92,26 @@ defmodule Chat.Rooms do
     Repo.delete(room)
   end
 
-  def send_message(attrs, content) do
+  def send_message(%{lang1: lang1, lang2: lang2} = attrs, content) do
     IO.inspect("Sending message:")
     IO.inspect(content)
+    IO.inspect("attrs:")
+    IO.inspect(attrs)
 
     Chat.RateLimiters.LeakyBucket.make_request(
-      {Chat.Translation, :translate, [content]},
+      {Chat.Translation, :translate, [content, {lang1, lang2}]},
       {__MODULE__, :handle_translation_result, [attrs]}
     )
   end
 
   def handle_translation_result(
-        {:ok, %{"english" => english, "spanish" => spanish}},
+        {:ok, %{"lang1" => lang1, "lang2" => lang2}},
         attrs
       ) do
     IO.inspect("Translation result:")
-    IO.inspect(%{"english" => english, "spanish" => spanish})
+    IO.inspect(%{"lang1" => lang1, "lang2" => lang2})
 
-    new_attrs = Map.merge(%{english_content: english, spanish_content: spanish}, attrs)
+    new_attrs = Map.merge(%{content_lang1: lang1, content_lang2: lang2}, attrs)
 
     %Message{}
     |> Message.changeset(new_attrs)

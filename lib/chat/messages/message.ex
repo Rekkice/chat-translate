@@ -4,8 +4,8 @@ defmodule Chat.Messages.Message do
   @derive {Jason.Encoder, except: [:__meta__, :room, :language]}
 
   schema "messages" do
-    field :spanish_content, :string
-    field :english_content, :string
+    field :content_lang1, :string
+    field :content_lang2, :string
     field :username, :string
 
     belongs_to :room, Chat.Rooms.Room
@@ -17,11 +17,11 @@ defmodule Chat.Messages.Message do
   @doc false
   def changeset(message, attrs) do
     message
-    |> cast(attrs, [:english_content, :spanish_content, :username, :room_id, :language_id])
-    |> validate_required([:english_content, :spanish_content, :room_id])
+    |> cast(attrs, [:content_lang1, :content_lang2, :username, :room_id, :language_id])
+    |> validate_required([:content_lang1, :content_lang2, :room_id])
     |> validate_length(:username, max: 24)
-    |> validate_length(:english_content, max: 350) # limit client-side to 300
-    |> validate_length(:spanish_content, max: 350) # limit client-side to 300
+    |> validate_length(:content_lang1, max: 350) # limit client-side to 300
+    |> validate_length(:content_lang2, max: 350) # limit client-side to 300
     |> unique_constraint(:room_id, name: :messages_room_id_language_id_index)
   end
 end
