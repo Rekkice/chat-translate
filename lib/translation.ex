@@ -33,7 +33,7 @@ defmodule Chat.Translation do
       |> Jason.encode!()
 
     api_url = Application.get_env(:chat, Chat.Translation)[:api_url]
-    api_key = System.get_env("GROQ_API_KEY")
+    api_key = Application.get_env(:chat, Chat.Translation)[:api_key]
 
     case HTTPoison.post(api_url, body, [
            {"Content-Type", "application/json"},

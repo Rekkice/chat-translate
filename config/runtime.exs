@@ -115,3 +115,7 @@ if config_env() == :prod do
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 end
+
+config :chat, Chat.Translation,
+  api_key: System.get_env("GROQ_API_KEY")
+
