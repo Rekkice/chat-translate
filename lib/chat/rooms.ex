@@ -59,21 +59,17 @@ defmodule Chat.Rooms do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_room() do
-    Repo.transaction(fn ->
-      room_changeset = Room.changeset(%Room{}, %{})
-      {:ok, room} = Repo.insert(room_changeset)
+  def create_room({lang1, lang2}) do
+    room_changeset = Room.changeset(%Room{}, %{lang1: lang1, lang2: lang2})
+    Repo.insert(room_changeset)
 
-      %Language{name: "Español", room_id: room.id}
-      |> Language.changeset(%{})
-      |> Repo.insert!()
+    # %Language{name: "Español", room_id: room.id}
+    # |> Language.changeset(%{})
+    # |> Repo.insert!()
 
-      %Language{name: "Inglés", room_id: room.id}
-      |> Language.changeset(%{})
-      |> Repo.insert!()
-
-      {:ok, room}
-    end)
+    # %Language{name: "Inglés", room_id: room.id}
+    # |> Language.changeset(%{})
+    # |> Repo.insert!()
   end
 
   @doc """

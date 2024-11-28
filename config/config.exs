@@ -11,6 +11,15 @@ config :chat,
   ecto_repos: [Chat.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+config :chat, Chat.Rooms,
+  # used to show as options in forms and to check if a language is valid
+  languages: ["English", "Spanish", "Portuguese", "Chinese", "Japanese", "Russian"],
+  default_languages: {"English", "Spanish"}
+
+config :chat, Chat.Translation,
+  model: "llama3-groq-70b-8192-tool-use-preview",
+  api_url: "https://api.groq.com/openai/v1/chat/completions"
+
 # Configures the endpoint
 config :chat, ChatWeb.Endpoint,
   url: [host: "localhost"],

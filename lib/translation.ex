@@ -3,13 +3,10 @@ defmodule Chat.Translation do
   Provides functions to handle message translations.
   """
 
-  @api_url "https://api.groq.com/openai/v1/chat/completions"
-  @model "llama3-70b-8192"
-
   @spec translate(String.t(), tuple()) :: {:ok, map()} | {:error, any()}
   def translate(content, {lang1, lang2}) do
     prompt =
-      ~s(JSON Translate the following message into these 2 languages: lang1=#{lang1} lang2=#{lang2}. Then, return a JSON with the "lang1" and "lang2" keys and their respective contents. If it could be seen as offensive, return [filtered] as a value for both keys. Keep the tone and writing style of the original message.)
+      ~s(JSON Translate the following message into these 2 languages: lang1=#{lang1} lang2=#{lang2}. Then, return a JSON with the "lang1" and "lang2" keys and their respective contents. If the content is highly offensive, return [filtered] as a value for both keys. Keep the tone and writing style of the original message, such as capitalization. In the original language, keep the original content, don't alter it.)
 
     body =
       %{
@@ -23,7 +20,7 @@ defmodule Chat.Translation do
             content: content
           }
         ],
-        model: @model,
+        model: Application.get_env(:chat, Chat.Translation)[:model],
         temperature: 1,
         max_tokens: 1024,
         top_p: 1,
@@ -35,9 +32,12 @@ defmodule Chat.Translation do
       }
       |> Jason.encode!()
 
-    case HTTPoison.post(@api_url, body, [
+    api_url = Application.get_env(:chat, Chat.Translation)[:api_url]
+    api_key = System.get_env("GROQ_API_KEY")
+
+    case HTTPoison.post(api_url, body, [
            {"Content-Type", "application/json"},
-           {"Authorization", "Bearer #{System.get_env("GROQ_API_KEY")}"}
+           {"Authorization", "Bearer #{api_key}"}
          ]) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         case Jason.decode(body) do

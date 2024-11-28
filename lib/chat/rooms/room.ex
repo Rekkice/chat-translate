@@ -13,10 +13,24 @@ defmodule Chat.Rooms.Room do
     timestamps(type: :utc_datetime)
   end
 
+  defp validate_different_languages(changeset) do
+    lang1 = get_field(changeset, :lang1)
+    lang2 = get_field(changeset, :lang2)
+
+    if lang1 == lang2 do
+      add_error(changeset, :lang2, "Language 2 must be different from Language 1")
+    else
+      changeset
+    end
+  end
+
   @doc false
   def changeset(room, attrs) do
     room
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, [:lang1, :lang2])
+    |> validate_required([:lang1, :lang2])
+    |> validate_inclusion(:lang1, Application.get_env(:chat, Chat.Rooms)[:languages])
+    |> validate_inclusion(:lang2, Application.get_env(:chat, Chat.Rooms)[:languages])
+    |> validate_different_languages
   end
 end
