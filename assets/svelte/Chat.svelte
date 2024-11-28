@@ -1,8 +1,11 @@
 <script lang="ts">
   // TODO add actual i18n, where each UI component shows lang1 | lang2 instead of hardcoded spanish | english
   import { onMount, tick } from "svelte";
-  import Icon from "./TranslateIcon.svelte";
+
   import QRCode from "easyqrcodejs";
+
+  import { alertStore } from "./AlertStore.js";
+  import Alert from "./Alert.svelte";
 
   interface Message {
     sender: string;
@@ -32,8 +35,7 @@
     };
   });
 
-  console.log(initialMessages)
-  
+
   async function scrollToBottom(_value: any) {
     if (typeof window == "undefined") return;
     let chatbox = document.getElementById("chatbox");
@@ -68,6 +70,10 @@
         };
         messages = [...messages, message];
       });
+
+      live.handleEvent("received_alert", ({ message, type }) => {
+        triggerAlert(message, type);
+      });
     }
   });
 
@@ -99,12 +105,18 @@
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      hour12: false
+      hour12: false,
     });
+  }
+
+  function triggerAlert(message: string, type = "info") {
+    alertStore.set({ message, type });
   }
 
   $: scrollToBottom(messages);
 </script>
+
+<Alert />
 
 <div class="mx-auto sm:grid sm:grid-cols-2 mt-14 sm:px-4 justify-center gap-4">
   {#if username}
@@ -146,7 +158,10 @@
                 : 'text-sapphire'}"
             >
               {message.sender}
-              <span class="text-overlay2 text-xs absolute bottom-0 top-0 h-fit translate-x-4 translate-y-1.5">{getLocaleDate(message.timestamp)}</span>
+              <span
+                class="text-overlay2 text-xs absolute bottom-0 top-0 h-fit translate-x-4 translate-y-1.5"
+                >{getLocaleDate(message.timestamp)}</span
+              >
             </div>
             <div class="w-full h-full bg-base rounded-xl px-2 z-10">
               <div class="break-all text-text relative py-4 pt-2">
@@ -215,7 +230,7 @@
       class="absolute left-0 top-0 w-full h-full flex justify-center items-center"
     >
       <div
-        class="w-fit h-fit bg-base shadow-lg border border-peach py-8 px-12 rounded-2xl flex flex-col gap-8 items-center justify-center"
+        class="w-fit h-fit bg-base shadow-lg border-2 border-rosewater py-8 px-12 rounded-2xl flex flex-col gap-8 items-center justify-center"
       >
         <h1 class="text-2xl text-text">
           Introduce tu nombre | Enter your name

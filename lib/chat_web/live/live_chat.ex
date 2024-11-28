@@ -39,17 +39,14 @@ defmodule ChatWeb.ChatLive do
       assigns
       |> Map.get(:room)
 
-    Rooms.send_message(%{room_id: room.id, username: username, lang1: room.lang1, lang2: room.lang2}, content)
+    Rooms.send_message(%{room_id: room.id, username: username, lang1: room.lang1, lang2: room.lang2, pid: self()}, content)
 
     {:noreply, socket}
   end
 
-  def handle_event("put_flash", %{"type" => type, "message" => message}, socket) do
-    {:noreply, put_flash(socket, String.to_atom(type), message)}
-  end
 
-  def handle_info({:put_flash, type, message}, socket) do
-    {:noreply, put_flash(socket, type, message)}
+  def handle_info({:put_alert, %{type: type, message: message}}, socket) do
+    {:noreply, push_event(socket, "received_alert", %{type: type, message: message})}
   end
 
   def handle_info({:sent_message, message}, socket) do

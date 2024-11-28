@@ -119,22 +119,20 @@ defmodule Chat.Rooms do
     |> notify(attrs.room_id, :sent_message)
   end
 
-  def handle_translation_result({:error, :bucket_full}) do
-    # TODO notify user
-    IO.inspect("Bucket is full", label: "Translation error:")
+  def handle_translation_result({:error, :bucket_full}, %{pid: pid}) do
+    send(pid, {:put_alert, %{type: "error", message: "Too many messages are being processed right now, please try again later."}})
   end
 
-  def handle_translation_result({:error, reason}) do
-    IO.inspect(reason, label: "Translation error:")
+  def handle_translation_result({:error, _reason}, %{pid: pid}) do
+    send(pid, {:put_alert, %{type: "error", message: "There was an error translating the message, please try again later."}})
   end
+
 
   def notify({:ok, %Message{} = message}, room_id, event) do
     PubSub.broadcast(Chat.PubSub, "room:#{room_id}", {event, message})
   end
 
   defp handle_insert_result({:ok, message}) do
-    IO.inspect("Message inserted successfully:")
-    IO.inspect(message)
     {:ok, message}
   end
 

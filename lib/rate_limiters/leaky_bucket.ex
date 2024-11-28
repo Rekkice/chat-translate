@@ -58,11 +58,11 @@ defmodule Chat.RateLimiters.LeakyBucket do
   # handles the case where the bucket is full
   @impl true
   def handle_cast(
-        {:enqueue_request, _, {resp_module, resp_function, _resp_args}},
+        {:enqueue_request, _, {resp_module, resp_function, resp_args}},
         %{request_queue_size: queue_size, bucket_size: bucket_size} = state
       )
       when queue_size == bucket_size do
-    apply(resp_module, resp_function, [{:error, :bucket_full}])
+    apply(resp_module, resp_function, [{:error, :bucket_full}] ++ resp_args)
 
     {:noreply, state}
   end

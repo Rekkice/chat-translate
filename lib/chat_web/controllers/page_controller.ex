@@ -6,9 +6,6 @@ defmodule ChatWeb.PageController do
     languages = Application.get_env(:chat, Chat.Rooms)[:languages]
     default_languages = Application.get_env(:chat, Chat.Rooms)[:default_languages]
 
-    IO.inspect("languages:")
-    IO.inspect(languages)
-
     render(conn, :home,
       layout: false,
       changeset: changeset,
