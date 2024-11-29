@@ -55,6 +55,9 @@
   function enterUsername(e) {
     const input = e.srcElement[0];
     username = input.value;
+    setTimeout(() => {
+      createQR()
+    }, 15);
   }
 
   onMount(() => {
