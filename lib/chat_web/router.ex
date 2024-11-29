@@ -8,6 +8,7 @@ defmodule ChatWeb.Router do
     plug :put_root_layout, html: {ChatWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug ChatWeb.Plugs.MetaTags
   end
 
   pipeline :api do

@@ -4,10 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
-    <meta property="og:title" {%{content: (assigns[:page_title] || "a page") <> " · chat-translate"}} />
-    <meta name="og:description" content="A chat app designed to bridge the language gap between a group of people, by using the power of AI to provide context-aware translations for every message in real-time." />
+    <meta property="og:title" content={@page_title <> " · chat-translate"} />
+    <meta property="og:description" content={@og_description} />
+    <meta property="og:image" content={@og_image} />
     <.live_title suffix=" · chat-translate">
-      <%= assigns[:page_title] || "a page" %>
+      <%= assigns[:page_title] %>
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>

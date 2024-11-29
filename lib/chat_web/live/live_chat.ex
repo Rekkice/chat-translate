@@ -29,7 +29,8 @@ defmodule ChatWeb.ChatLive do
        init_messages: room.messages,
        lang1: room.lang1,
        lang2: room.lang2,
-       page_title: id
+       page_title: id,
+       og_description: "A #{room.lang1} and #{room.lang2} chat room."
      )}
   end
 
