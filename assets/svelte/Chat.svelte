@@ -170,7 +170,7 @@
                   class="absolute bg-white -top-3 right-0 h-6 p-1 rounded-lg flex flex-row items-center justify-center gap-1 border border-crust"
                 >
                   <svg
-                    class="w-full h-full fill-teal"
+                    class="size-[14px] fill-teal aspect-square"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 -960 960 960"
                     ><path
@@ -187,7 +187,7 @@
                   class="absolute bg-white -top-1 right-0 h-6 p-1 rounded-lg flex flex-row items-center justify-center gap-1 border border-crust"
                 >
                   <svg
-                    class="w-full h-full fill-teal"
+                    class="size-[14px] fill-teal"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 -960 960 960"
                     ><path
@@ -215,7 +215,7 @@
         />
         <button class="w-16 p-2 fill-peach flex justify-center items-center">
           <svg
-            class=""
+            class="size-12"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 -960 960 960"
             ><path
@@ -232,7 +232,7 @@
       <div
         class="w-fit h-fit bg-base shadow-lg border-2 border-rosewater py-8 px-12 rounded-2xl flex flex-col gap-8 items-center justify-center"
       >
-        <h1 class="text-2xl text-text">
+        <h1 class="text-2xl text-text text-center">
           Introduce tu nombre | Enter your name
         </h1>
         <form on:submit|preventDefault={enterUsername}>
