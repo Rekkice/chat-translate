@@ -6,7 +6,7 @@ defmodule Chat.Translation do
   @spec translate(String.t(), tuple()) :: {:ok, map()} | {:error, any()}
   def translate(content, {lang1, lang2}) do
     prompt =
-      ~s(JSON Translate the following message into these 2 languages: lang1=#{lang1} lang2=#{lang2}. Then, return a JSON with the "lang1" and "lang2" keys and their respective contents. If the content is highly offensive, return [filtered] as a value for both keys. Keep the tone and writing style of the original message, such as capitalization. In the original language, keep the original content, don't alter it.)
+      ~s(JSON Translate the following message into these 2 languages: lang1=#{lang1} lang2=#{lang2}. Then, return a JSON with the "lang1" and "lang2" keys and their respective contents. Keep the tone and writing style of the original message, such as capitalization. In the original language, keep the original content, don't alter it.)
 
     body =
       %{
