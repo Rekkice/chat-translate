@@ -28,7 +28,8 @@ defmodule ChatWeb.ChatLive do
        room: room,
        init_messages: room.messages,
        lang1: room.lang1,
-       lang2: room.lang2
+       lang2: room.lang2,
+       page_title: id
      )}
   end
 

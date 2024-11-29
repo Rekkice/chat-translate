@@ -10,11 +10,8 @@ defmodule ChatWeb.PageController do
       layout: false,
       changeset: changeset,
       languages: languages,
-      default_languages: default_languages
+      default_languages: default_languages,
+      page_title: "home"
     )
   end
-
-  # def redirect_home(conn, _params) do
-  #   redirect(conn, to: "/room/1")
-  # end
 end
