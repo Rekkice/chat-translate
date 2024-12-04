@@ -84,6 +84,24 @@ RUN apt-get update -y && \
 # install nodejs for production environment
 RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash - && apt-get install -y nodejs
 
+# install font for image generation
+RUN apt-get update && apt-get install -y \
+    fontconfig \
+    curl \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# create a directory for the Urbanist fonts and download the font package
+RUN mkdir -p /usr/share/fonts/truetype/urbanist \
+    && curl -L https://github.com/coreyhu/Urbanist/releases/download/1.330/Urbanist-fonts.zip -o urbanist.zip \
+    && unzip urbanist.zip -d /usr/share/fonts/truetype/urbanist \
+    && fc-cache -f -v \
+    && rm urbanist.zip
+
+# clean up unnecessary dependencies
+RUN apt-get remove -y unzip \
+    && apt-get autoremove -y
+
 # Set the locale
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
 

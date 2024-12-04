@@ -60,7 +60,8 @@ defmodule Chat.MixProject do
       {:bandit, "~> 1.2"},
       {:live_svelte, "~> 0.13.2"},
       {:httpoison, "~> 1.8"},
-      {:friendlyid, "~> 0.2.0"}
+      {:friendlyid, "~> 0.2.0"},
+      {:image, "~> 0.37"}
     ]
   end
 

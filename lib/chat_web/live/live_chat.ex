@@ -1,5 +1,6 @@
 defmodule ChatWeb.ChatLive do
   use ChatWeb, :live_view
+  use ChatWeb, :verified_routes
   alias Chat.Rooms
 
   def render(assigns) do
@@ -30,7 +31,8 @@ defmodule ChatWeb.ChatLive do
        lang1: room.lang1,
        lang2: room.lang2,
        page_title: id,
-       og_description: "A #{room.lang1} and #{room.lang2} chat room."
+       og_description: "A #{room.lang1} and #{room.lang2} chat room with live translation.",
+       og_image: ~p"/og/#{id}"
      )}
   end
 

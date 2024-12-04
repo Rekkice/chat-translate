@@ -27,7 +27,8 @@ defmodule Chat.Application do
          timeframe_units: RateLimiter.get_timeframe_unit(),
          timeframe: RateLimiter.get_timeframe(),
          bucket_size: RateLimiter.get_bucket_size()
-       }}
+       }},
+       ChatWeb.OgImage.Cache
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

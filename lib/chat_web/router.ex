@@ -21,6 +21,7 @@ defmodule ChatWeb.Router do
     resources "/rooms", RoomController, only: [:create, :show]
 
     get "/", PageController, :home
+    get "/og/:id", OgImageController, :show
 
     live "/room/:id", ChatLive, :show
   end
