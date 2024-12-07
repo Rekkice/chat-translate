@@ -5,7 +5,7 @@ defmodule Chat.Rooms.Room do
 
   schema "rooms" do
     field :url_id, :string
-    
+
     # has_many :languages, Chat.Lang.Language
     has_many :messages, Chat.Messages.Message
 

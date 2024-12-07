@@ -7,7 +7,10 @@ defmodule ChatWeb.Plugs.MetaTags do
   def call(conn, _opts) do
     conn
     |> assign(:page_title, "a page")
-    |> assign(:og_description, "A chat app designed to bridge the language gap between a group of people, by using the power of AI to provide context-aware translations for every message in real-time.")
+    |> assign(
+      :og_description,
+      "A chat app designed to bridge the language gap between a group of people, by using the power of AI to provide context-aware translations for every message in real-time."
+    )
     |> assign(:og_image, "default-image.webp")
   end
 end

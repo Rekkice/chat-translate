@@ -43,11 +43,13 @@ defmodule ChatWeb.ChatLive do
       assigns
       |> Map.get(:room)
 
-    Rooms.send_message(%{room_id: room.id, username: username, lang1: room.lang1, lang2: room.lang2, pid: self()}, content)
+    Rooms.send_message(
+      %{room_id: room.id, username: username, lang1: room.lang1, lang2: room.lang2, pid: self()},
+      content
+    )
 
     {:noreply, socket}
   end
-
 
   def handle_info({:put_alert, %{type: type, message: message}}, socket) do
     {:noreply, push_event(socket, "received_alert", %{type: type, message: message})}

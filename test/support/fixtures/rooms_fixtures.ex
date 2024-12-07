@@ -10,9 +10,7 @@ defmodule Chat.RoomsFixtures do
   def room_fixture(attrs \\ %{}) do
     {:ok, room} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> Chat.Rooms.create_room()
 
     room

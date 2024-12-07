@@ -7,10 +7,10 @@
     <meta property="og:title" content={@page_title <> " · chat-translate"} />
     <meta property="og:description" content={@og_description} />
     <meta property="og:image" content={@og_image} />
-    <meta name="theme-color" content="#04a5e5">
-    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#04a5e5" />
+    <meta name="twitter:card" content="summary_large_image" />
     <.live_title suffix=" · chat-translate">
-      <%= assigns[:page_title] %>
+      {assigns[:page_title]}
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
@@ -23,6 +23,6 @@
     />
   </head>
   <body class="bg-base antialiased font-titillium">
-    <%= @inner_content %>
+    {@inner_content}
   </body>
 </html>

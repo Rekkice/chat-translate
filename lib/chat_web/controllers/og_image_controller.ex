@@ -4,6 +4,7 @@ defmodule ChatWeb.OgImageController do
 
   def show(conn, %{"id" => id}) do
     room = Rooms.get_room_by_url_id!(id)
+
     case ChatWeb.OgImage.get_or_generate_image(room) do
       {:ok, image} ->
         {:ok, image_binary} = image |> Vix.Vips.Image.write_to_buffer(".png[Q=90]")

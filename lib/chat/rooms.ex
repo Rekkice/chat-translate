@@ -120,13 +120,26 @@ defmodule Chat.Rooms do
   end
 
   def handle_translation_result({:error, :bucket_full}, %{pid: pid}) do
-    send(pid, {:put_alert, %{type: "error", message: "Too many messages are being processed right now, please try again later."}})
+    send(
+      pid,
+      {:put_alert,
+       %{
+         type: "error",
+         message: "Too many messages are being processed right now, please try again later."
+       }}
+    )
   end
 
   def handle_translation_result({:error, _reason}, %{pid: pid}) do
-    send(pid, {:put_alert, %{type: "error", message: "There was an error translating the message, please try again later."}})
+    send(
+      pid,
+      {:put_alert,
+       %{
+         type: "error",
+         message: "There was an error translating the message, please try again later."
+       }}
+    )
   end
-
 
   def notify({:ok, %Message{} = message}, room_id, event) do
     PubSub.broadcast(Chat.PubSub, "room:#{room_id}", {event, message})

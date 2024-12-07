@@ -6,16 +6,12 @@
       This chat app is designed to bridge the language gap between a group of people, by using the power of AI to provide context-aware translations for every message in real-time.
     </p>
     <div class="flex flex-col justify-between items-center my-2">
-      <.form
-        for={@changeset}
-        action={~p"/rooms"}
-        class="w-full flex flex-col items-center"
-      >
+      <.form for={@changeset} action={~p"/rooms"} class="w-full flex flex-col items-center">
         <div class="my-4 flex w-full items-center">
           <select name="room[lang1]" class="basis-1 grow">
             <%= for language <- @languages do %>
               <option {%{value: language, selected: language == (@default_languages |> elem(0))}}>
-                <%= language %>
+                {language}
               </option>
             <% end %>
           </select>
@@ -25,7 +21,7 @@
           <select name="room[lang2]" class="basis-1 grow">
             <%= for language <- @languages do %>
               <option {%{value: language, selected: language == (@default_languages |> elem(1))}}>
-                <%= language %>
+                {language}
               </option>
             <% end %>
           </select>
