@@ -111,7 +111,7 @@
        stroke="#000000"
        fill="#000000"><tspan
          style="fill:#001d37;fill-opacity:1"
-         id="tspan4">{{title}}</tspan></text><text
+         id="tspan4"><%= @title %></tspan></text><text
        xml:space="preserve"
        text-anchor="middle"
        dominant-baseline="middle"
@@ -124,11 +124,11 @@
        stroke="#000000"
        fill="#000000"><tspan
    style="fill:#363636;fill-opacity:1"
-   id="tspan3">{{lang1}}</tspan> <tspan
+   id="tspan3"><%= @lang1 %></tspan> <tspan
    style="fill:#f670cc;fill-opacity:1"
    id="tspan1">|</tspan> <tspan
    style="fill:#363636;fill-opacity:1"
-   id="tspan2">{{lang2}}</tspan></text><text
+   id="tspan2"><%= @lang2 %></tspan></text><text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:42.6667px;font-family:Urbanist;-inkscape-font-specification:'Urbanist, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#363636;fill-opacity:1"
        x="24.186636"
