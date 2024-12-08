@@ -32,7 +32,7 @@ defmodule ChatWeb.ChatLive do
        lang2: room.lang2,
        page_title: id,
        og_description: "A #{room.lang1} and #{room.lang2} chat room with live translation.",
-       og_image: ~p"/og/#{id}"
+       og_image: ~p"/og/room/#{id}"
      )}
   end
 

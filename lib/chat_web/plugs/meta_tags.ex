@@ -11,6 +11,6 @@ defmodule ChatWeb.Plugs.MetaTags do
       :og_description,
       "A chat app designed to bridge the language gap between a group of people, by using the power of AI to provide context-aware translations for every message in real-time."
     )
-    |> assign(:og_image, "default-image.webp")
+    |> assign(:og_image, "/og/home")
   end
 end
