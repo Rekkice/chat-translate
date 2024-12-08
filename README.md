@@ -5,7 +5,9 @@ Live demo hosted at https://chat-translate.rekkice.dev
 
 ## Key Features
 - Real-time translation of chat messages through an external API
-- Easily join a chatroom just by scanning the QR code shown next to the chat
+- Easily join a chatroom just by scanning the QR code shown next to the chat, or by typing the human-friendly URL
+- Easily create a chatroom, choosing 2 available languages that will be used to generate the translations
+- Dynamically generated OpenGraph images, shown when sharing the URL in social media
 
 ## Technologies Used
 - Elixir & Phoenix (for backend)
@@ -16,11 +18,13 @@ Live demo hosted at https://chat-translate.rekkice.dev
 
 ## Usage
 
-To start the Phoenix server:
+To start the app:
 
-  * Run `mix setup` to install and setup dependencies
+  * Run `devenv shell` to enter a shell with the necessary system dependencies
+  * Run `devenv up -d` to start a Postgres instance in the background
+  * Run `mix setup` to install and setup Elixir dependencies
   * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser. Make sure a postgres instance is running.
+Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ![Screenshot_9-10-2024_192431_chat-translate rekkice dev](https://github.com/user-attachments/assets/51152d75-7b26-44e1-b042-f951ffe05f11)
 
