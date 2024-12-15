@@ -117,7 +117,10 @@ defmodule Chat.Rooms do
     |> Repo.insert()
     |> handle_insert_result()
     |> notify(attrs.room_id, :sent_message)
+
+    send_confirmation(attrs.pid)
   end
+
 
   def handle_translation_result({:error, :bucket_full}, %{pid: pid}) do
     send(
@@ -128,9 +131,14 @@ defmodule Chat.Rooms do
          message: "Too many messages are being processed right now, please try again later."
        }}
     )
+
+    send_confirmation(pid)
   end
 
-  def handle_translation_result({:error, _reason}, %{pid: pid}) do
+  def handle_translation_result({:error, reason}, %{pid: pid}) do
+    IO.inspect("error:")
+    IO.inspect(reason)
+
     send(
       pid,
       {:put_alert,
@@ -139,6 +147,8 @@ defmodule Chat.Rooms do
          message: "There was an error translating the message, please try again later."
        }}
     )
+
+    send_confirmation(pid)
   end
 
   def notify({:ok, %Message{} = message}, room_id, event) do
@@ -162,4 +172,7 @@ defmodule Chat.Rooms do
   def change_room(%Room{} = room, attrs \\ %{}) do
     Room.changeset(room, attrs)
   end
+
+  defp send_confirmation(pid), do:
+    send(pid, :sent_confirmation)
 end

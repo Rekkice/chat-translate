@@ -51,11 +51,12 @@ defmodule ChatWeb.ChatLive do
     {:noreply, socket}
   end
 
-  def handle_info({:put_alert, %{type: type, message: message}}, socket) do
+  def handle_info({:put_alert, %{type: type, message: message}}, socket), do:
     {:noreply, push_event(socket, "received_alert", %{type: type, message: message})}
-  end
 
-  def handle_info({:sent_message, message}, socket) do
+  def handle_info(:sent_confirmation, socket), do:
+    {:noreply, push_event(socket, "sent_confirmation", %{})}
+
+  def handle_info({:sent_message, message}, socket), do:
     {:noreply, push_event(socket, "received_message", %{message: message})}
-  end
 end

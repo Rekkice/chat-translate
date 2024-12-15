@@ -23,7 +23,10 @@
   let chatInput;
   let createdQR = false;
 
-  export let username: string;
+  let username: string;
+
+  let blockTextArea = false;
+  let blockTimeout = null;
 
   let messages: Message[] = [];
   messages = initialMessages.map((message) => {
@@ -50,6 +53,11 @@
       username: username,
     });
     input.value = "";
+    blockTextArea = true;
+    blockTimeout = setTimeout(() => {
+      triggerAlert("There was an error sending the message.", "error")
+      blockTextArea = false;
+    }, 10000)
   }
 
   function enterUsername(e) {
@@ -76,6 +84,13 @@
 
       live.handleEvent("received_alert", ({ message, type }) => {
         triggerAlert(message, type);
+      });
+
+      live.handleEvent("sent_confirmation", async () => {
+        blockTextArea = false;
+        clearTimeout(blockTimeout);
+        await tick()
+        chatInput.focus()
       });
     }
   });
@@ -206,7 +221,6 @@
       </div>
       <form
         on:submit|preventDefault={sendMessage}
-        bind:this={chatInput}
         class="flex gap-4 px-2 pb-2 sm:pb-0 sm:px-0"
       >
         <textarea
@@ -214,7 +228,9 @@
           minlength="1"
           maxlength="300"
           required
+          bind:this={chatInput}
           on:keydown={handleKeyDown}
+          disabled={blockTextArea}
         />
         <button class="w-16 p-2 fill-peach flex justify-center items-center">
           <svg
