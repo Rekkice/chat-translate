@@ -1,10 +1,15 @@
-defmodule ChatWeb.Plugs.MetaTags do
+defmodule ChatWeb.Plugs.Init do
   import Plug.Conn
 
   def init(default), do: default
 
-  # default values for meta tags
   def call(conn, _opts) do
+    conn
+    |> default_meta_tags
+    |> init_id
+  end
+
+  defp default_meta_tags(conn) do
     conn
     |> assign(:page_title, "a page")
     |> assign(
@@ -13,4 +18,12 @@ defmodule ChatWeb.Plugs.MetaTags do
     )
     |> assign(:og_image, "/og/home")
   end
+
+  defp init_id(conn) do
+    case get_session(conn, :id) do
+      nil -> conn |> put_session(:id, Ecto.UUID.generate)
+      _ -> conn
+    end
+  end
 end
+
