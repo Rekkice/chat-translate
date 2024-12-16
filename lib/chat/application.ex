@@ -29,7 +29,8 @@ defmodule Chat.Application do
          bucket_size: RateLimiter.get_bucket_size()
        }},
       ChatWeb.OgImage.Cache,
-      {Cachex, [:user_cache]},
+      Supervisor.child_spec({Cachex, [:user_cache]}, id: :user_cache),
+      Supervisor.child_spec({Cachex, [:metrics_cache]}, id: :metrics_cache),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

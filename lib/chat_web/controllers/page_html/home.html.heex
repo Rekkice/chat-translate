@@ -1,5 +1,5 @@
 <.flash_group flash={@flash} />
-<div class="h-full min-h-screen w-full flex justify-center items-center text-text">
+<div class="h-full min-h-screen w-full flex justify-center items-center text-text relative">
   <section class="max-w-[512px] w-full bg-mantle sm:border-crust sm:border-2 sm:h-[25rem] flex flex-col justify-between py-12 px-8 rounded-xl">
     <h1 class="text-4xl text-center text-sapphire">Welcome to chat-translate!</h1>
     <p class="text-center py-2">
@@ -35,5 +35,8 @@
         Join the demo room
       </a>
     </div>
+  </section>
+  <section class="absolute bottom-16 text-xl text-subtext0">
+    <p><span class="text-rosewater">{@room_count}</span> active rooms and <span class="text-rosewater">{@message_count}</span> messages sent!</p>
   </section>
 </div>
