@@ -8,11 +8,7 @@ defmodule ChatWeb.Router do
     plug :put_root_layout, html: {ChatWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug ChatWeb.Plugs.MetaTags
-  end
-
-  pipeline :api do
-    plug :accepts, ["json"]
+    plug ChatWeb.Plugs.Init
   end
 
   scope "/", ChatWeb do
@@ -26,11 +22,6 @@ defmodule ChatWeb.Router do
 
     live "/room/:id", ChatLive, :show
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", ChatWeb do
-  #   pipe_through :api
-  # end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:chat, :dev_routes) do

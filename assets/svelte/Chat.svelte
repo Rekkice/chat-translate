@@ -23,7 +23,7 @@
   let chatInput;
   let createdQR = false;
 
-  let username: string;
+  export let username: string;
 
   let blockTextArea = false;
   let blockTimeout = null;
@@ -63,6 +63,9 @@
   function enterUsername(e) {
     const input = e.srcElement[0];
     username = input.value;
+    live.pushEvent("set_username", {
+      username: username,
+    });
     setTimeout(() => {
       createQR()
     }, 15);

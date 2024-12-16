@@ -61,7 +61,8 @@ defmodule Chat.MixProject do
       {:live_svelte, "~> 0.13.2"},
       {:httpoison, "~> 1.8"},
       {:friendlyid, "~> 0.2.0"},
-      {:image, "~> 0.37"}
+      {:image, "~> 0.37"},
+      {:cachex, "~> 4.0.3"}
     ]
   end
 
