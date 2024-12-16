@@ -36,6 +36,7 @@ defmodule ChatWeb.OgImageController do
 
   defp send_error_response(conn, reason) do
     Logger.error("Failed to generate og image: " <> inspect(reason))
+
     conn
     |> put_status(:internal_server_error)
     |> json(%{error: reason})

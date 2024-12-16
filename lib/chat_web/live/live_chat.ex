@@ -25,11 +25,12 @@ defmodule ChatWeb.ChatLive do
     # takes real room id
     Rooms.subscribe(room.id)
 
-    username = case ChatWeb.UserCache.get_username(user_id, room_id) do
-      {:ok, nil} -> ""
-      {:ok, username} -> username
-      _ -> ""
-    end
+    username =
+      case ChatWeb.UserCache.get_username(user_id, room_id) do
+        {:ok, nil} -> ""
+        {:ok, username} -> username
+        _ -> ""
+      end
 
     {:ok,
      assign(socket,

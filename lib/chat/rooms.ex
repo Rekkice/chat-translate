@@ -121,7 +121,6 @@ defmodule Chat.Rooms do
     send_confirmation(attrs.pid)
   end
 
-
   def handle_translation_result({:error, :bucket_full}, %{pid: pid}) do
     send(
       pid,
@@ -173,6 +172,5 @@ defmodule Chat.Rooms do
     Room.changeset(room, attrs)
   end
 
-  defp send_confirmation(pid), do:
-    send(pid, :sent_confirmation)
+  defp send_confirmation(pid), do: send(pid, :sent_confirmation)
 end

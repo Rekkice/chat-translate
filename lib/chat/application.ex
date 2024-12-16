@@ -30,7 +30,7 @@ defmodule Chat.Application do
        }},
       ChatWeb.OgImage.Cache,
       Supervisor.child_spec({Cachex, [:user_cache]}, id: :user_cache),
-      Supervisor.child_spec({Cachex, [:metrics_cache]}, id: :metrics_cache),
+      Supervisor.child_spec({Cachex, [:metrics_cache]}, id: :metrics_cache)
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -21,9 +21,8 @@ defmodule ChatWeb.Plugs.Init do
 
   defp init_id(conn) do
     case get_session(conn, :id) do
-      nil -> conn |> put_session(:id, Ecto.UUID.generate)
+      nil -> conn |> put_session(:id, Ecto.UUID.generate())
       _ -> conn
     end
   end
 end
-
