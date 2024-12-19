@@ -9,7 +9,6 @@ defmodule Chat.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      {NodeJS.Supervisor, [path: LiveSvelte.SSR.NodeJS.server_path(), pool_size: 4]},
       ChatWeb.Telemetry,
       Chat.Repo,
       {DNSCluster, query: Application.get_env(:chat, :dns_cluster_query) || :ignore},
@@ -30,7 +29,8 @@ defmodule Chat.Application do
        }},
       ChatWeb.OgImage.Cache,
       Supervisor.child_spec({Cachex, [:user_cache]}, id: :user_cache),
-      Supervisor.child_spec({Cachex, [:metrics_cache]}, id: :metrics_cache)
+      Supervisor.child_spec({Cachex, [:metrics_cache]}, id: :metrics_cache),
+      {DenoRider, [main_module_path: "priv/svelte/server.js"]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

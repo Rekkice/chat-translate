@@ -31,6 +31,8 @@ config :chat, ChatWeb.Endpoint,
   pubsub_server: Chat.PubSub,
   live_view: [signing_salt: "zBwxTxQz"]
 
+config :live_svelte, ssr_module: ChatWeb.SSR.Deno
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails

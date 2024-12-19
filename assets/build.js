@@ -29,11 +29,12 @@ let optsClient = {
 
 let optsServer = {
     entryPoints: ["js/server.js"],
-    platform: "node",
+    platform: "neutral",
     bundle: true,
     minify: false,
-    target: "node19.6.1",
+    target: "esnext",
     conditions: ["svelte"],
+    format: "esm",
     outdir: "../priv/svelte",
     logLevel: "info",
     sourcemap: watch ? "inline" : false,
@@ -43,10 +44,17 @@ let optsServer = {
         importGlobPlugin(),
         sveltePlugin({
             preprocess: sveltePreprocess(),
-            compilerOptions: {dev: !deploy, hydratable: true, generate: "ssr"},
+            compilerOptions: { dev: !deploy, hydratable: true, generate: "ssr" },
         }),
     ],
-}
+    mainFields: ["module", "main"],
+    resolveExtensions: [".js", ".mjs", ".ts", ".json"],
+    footer: {
+        js: "globalThis.render = render;",
+    },
+};
+
+
 
 const client = esbuild.build(optsClient)
 const server = esbuild.build(optsServer)

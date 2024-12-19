@@ -62,7 +62,8 @@ defmodule Chat.MixProject do
       {:httpoison, "~> 1.8"},
       {:friendlyid, "~> 0.2.0"},
       {:image, "~> 0.37"},
-      {:cachex, "~> 4.0.3"}
+      {:cachex, "~> 4.0.3"},
+      {:deno_rider, "~> 0.1"}
     ]
   end
 
