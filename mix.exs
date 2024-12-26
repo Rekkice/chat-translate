@@ -80,21 +80,18 @@ defmodule Chat.MixProject do
         "ecto.setup",
         "assets.setup",
         "assets.build",
-        "npm install --prefix assets"
+        "cmd --cd assets npm install"
       ],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind chat", "esbuild chat"],
+      "assets.setup": ["tailwind.install --if-missing"],
+      "assets.build": ["tailwind chat"],
       "assets.deploy": [
         "tailwind chat --minify",
-        # "esbuild chat --minify",
         "cmd --cd assets node build.js --deploy",
-        # "node build.js --deploy --prefix assets",
         "phx.digest"
       ]
-      # "assets.deploy": ["cmd --cd assets node build.js --deploy", "phx.digest"]
     ]
   end
 end
