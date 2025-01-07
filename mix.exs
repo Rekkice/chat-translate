@@ -80,7 +80,8 @@ defmodule Chat.MixProject do
         "ecto.setup",
         "assets.setup",
         "assets.build",
-        "cmd --cd assets npm install"
+        "cmd --cd assets npm install",
+        "cmd --cd assets node build.js"
       ],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
